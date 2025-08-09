@@ -1,6 +1,6 @@
 Alien Alert - Global Threat Detection 🎯
 Basic Details
-Team Name: The Useless Engineers
+Team Name: Codex
 Team Members
 
 Team Lead: Deepak N S - Cochin University College Of Engineering, Kuttanad
