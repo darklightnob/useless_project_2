@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚨🌍 Alien Alert - Global Threat Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000000; /* Explicitly black */
+            font-family: 'Orbitron', sans-serif;
+            color: white;
+        }
+
+        #scene-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            outline: none;
+        }
+
+        .header-container {
+            position: absolute;
+            top: 30px; /* Moved down slightly */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 95vw; /* Ensure it doesn't overflow */
+            text-align: center;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .main-title {
+            font-size: clamp(2em, 5vw, 2.8em); /* Increased size */
+            color: #00ddff;
+            text-shadow: 0 0 5px #00ddff, 0 0 10px #00aaff;
+            margin: 0;
+        }
+
+        .sub-title {
+            font-size: clamp(0.9em, 2vw, 1.1em); /* Increased size */
+            color: #cccccc;
+            margin-top: 8px;
+            font-weight: 400;
+        }
+
+        .ui-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+            width: 90%;
+            max-width: 700px;
+            z-index: 10;
+        }
+        
+        .sci-fi-text {
+            color: #ff4d4d; /* Red for alerts */
+            text-shadow: 0 0 7px #ff4d4d, 0 0 10px #ff4d4d, 0 0 21px #ff4d4d, 0 0 42px #ff0000, 0 0 82px #ff0000;
+            text-align: center;
+        }
+
+        #warning-text {
+            font-size: clamp(1.5em, 5vw, 2.5em);
+            font-weight: 700;
+            animation: flicker 1.5s infinite alternate;
+        }
+
+        #popup-dialog {
+            background: radial-gradient(ellipse at center, rgba(0, 25, 50, 0.85) 0%, rgba(0, 10, 20, 0.9) 100%);
+            border: 1px solid #00aaff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.6), inset 0 0 20px rgba(0, 170, 255, 0.4);
+            pointer-events: all;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        #popup-question {
+            font-size: clamp(1.2em, 4vw, 1.8em);
+            margin: 0 0 25px 0;
+            color: #00ddff;
+            text-shadow: 0 0 5px #00ddff, 0 0 10px #00aaff;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .buttons button {
+            background-color: transparent;
+            border: 2px solid #00ddff;
+            color: #00ddff;
+            padding: 12px 35px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+            text-shadow: 0 0 5px #00aaff;
+        }
+
+        .buttons button:hover {
+            background-color: rgba(0, 221, 255, 0.2);
+            box-shadow: 0 0 20px #00ddff;
+            transform: translateY(-2px);
+        }
+        
+        #broadcast-message {
+            font-size: clamp(2em, 6vw, 3.5em);
+            font-weight: 700;
+            animation: pulse-glow 1.5s infinite ease-in-out;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 0 0 7px #ff4d4d, 0 0 10px #ff4d4d, 0 0 21px #ff4d4d, 0 0 42px #ff0000, 0 0 82px #ff0000;
+                opacity: 1;
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+                opacity: 0.6;
+            }
+        }
+        
+        @keyframes pulse-glow {
+            0% { transform: scale(1); text-shadow: 0 0 7px #ff4d4d, 0 0 10px #ff0000; }
+            50% { transform: scale(1.05); text-shadow: 0 0 15px #ff8a8a, 0 0 30px #ff4d4d; }
+            100% { transform: scale(1); text-shadow: 0 0 7px #ff4d4d, 0 0 10px #ff0000; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <h1 class="main-title">�🌍 Alien Alert - Global Threat Detection</h1>
+        <p class="sub-title">Click on regions to initiate anomaly detection</p>
+    </div>
+
+    <canvas id="scene-canvas"></canvas>
+
+    <div class="ui-container">
+        <h1 id="warning-text" class="sci-fi-text hidden"></h1>
+        <div id="popup-dialog" class="hidden">
+            <p id="popup-question" class="sci-fi-text"></p>
+            <div class="buttons">
+                <button id="yes-btn">YES</button>
+                <button id="no-btn">NO</button>
+            </div>
+        </div>
+        <h1 id="broadcast-message" class="sci-fi-text hidden"></h1>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- SCENE, CAMERA, RENDERER ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.querySelector('#scene-canvas'),
+            antialias: true,
+        });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.set(0, 10, 40);
+
+        // --- CONTROLS ---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.minDistance = 20;
+        controls.maxDistance = 150;
+        
+        // --- LIGHTING ---
+        const sunLight = new THREE.DirectionalLight(0xffffff, 3.0);
+        sunLight.position.set(-100, 10, 50);
+        scene.add(sunLight);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+        scene.add(ambientLight);
+
+        // --- TEXTURE LOADER ---
+        const textureLoader = new THREE.TextureLoader();
+
+        // --- EARTH ---
+        const EARTH_RADIUS = 15;
+        const earthGeometry = new THREE.SphereGeometry(EARTH_RADIUS, 64, 64);
+        const earthMaterial = new THREE.MeshPhongMaterial({
+            map: textureLoader.load('https://raw.githubusercontent.com/turban/webgl-earth/master/images/2_no_clouds_4k.jpg', (tex) => { tex.colorSpace = THREE.SRGBColorSpace; }),
+            bumpMap: textureLoader.load('https://raw.githubusercontent.com/turban/webgl-earth/master/images/elev_bump_4k.jpg'),
+            bumpScale: 0.1,
+            specularMap: textureLoader.load('https://raw.githubusercontent.com/turban/webgl-earth/master/images/water_4k.png'),
+            specular: new THREE.Color('grey'),
+            emissiveMap: textureLoader.load('https://raw.githubusercontent.com/turban/webgl-earth/master/images/lights_4k.jpg'),
+            emissive: new THREE.Color(0xffffff)
+        });
+        const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+        scene.add(earth);
+
+        // --- CLOUDS ---
+        const cloudGeometry = new THREE.SphereGeometry(EARTH_RADIUS + 0.2, 64, 64);
+        const cloudMaterial = new THREE.MeshPhongMaterial({
+            map: textureLoader.load('https://raw.githubusercontent.com/turban/webgl-earth/master/images/fair_clouds_4k.png'),
+            transparent: true,
+            opacity: 0.6
+        });
+        const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
+        scene.add(clouds);
+
+        // --- ATMOSPHERIC GLOW ---
+        const atmosphereMaterial = new THREE.ShaderMaterial({
+            vertexShader: `
+                varying vec3 vNormal;
+                void main() {
+                    vNormal = normalize(normalMatrix * normal);
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                varying vec3 vNormal;
+                void main() {
+                    float intensity = pow(0.6 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+                    gl_FragColor = vec4(0.3, 0.6, 1.0, 1.0) * intensity;
+                }
+            `,
+            side: THREE.BackSide,
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        });
+        const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(EARTH_RADIUS + 1, 64, 64), atmosphereMaterial);
+        scene.add(atmosphere);
+
+        // --- STARFIELD ---
+        const starVertices = [];
+        for (let i = 0; i < 15000; i++) {
+            const x = THREE.MathUtils.randFloatSpread(2000);
+            const y = THREE.MathUtils.randFloatSpread(2000);
+            const z = THREE.MathUtils.randFloatSpread(2000);
+            starVertices.push(x, y, z);
+        }
+        const starGeometry = new THREE.BufferGeometry();
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5, sizeAttenuation: true });
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+
+        // --- ALIEN SPACESHIP (POLISHED UFO MODEL) ---
+        const ship = new THREE.Group();
+        const shipBodyMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xcccccc, 
+            metalness: 0.8, 
+            roughness: 0.2 
+        });
+        const glassMaterial = new THREE.MeshPhongMaterial({
+            color: 0xaaddff,
+            transparent: true,
+            opacity: 0.3,
+            shininess: 100
+        });
+        const lightMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00ffff,
+            toneMapped: false
+        });
+
+        // Main saucer disc
+        const saucerRadius = 3;
+        const saucerHeight = 0.5;
+        const saucerGeo = new THREE.CylinderGeometry(saucerRadius * 0.8, saucerRadius, saucerHeight, 64);
+        const saucer = new THREE.Mesh(saucerGeo, shipBodyMaterial);
+        ship.add(saucer);
+
+        // Top dome (glass)
+        const domeRadius = 1.8;
+        const domeGeo = new THREE.SphereGeometry(domeRadius, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+        const dome = new THREE.Mesh(domeGeo, glassMaterial);
+        dome.position.y = saucerHeight / 2;
+        ship.add(dome);
+        
+        // Glowing lights ring
+        const lightRingGeo = new THREE.TorusGeometry(saucerRadius * 0.9, 0.1, 16, 100);
+        const lightRing = new THREE.Mesh(lightRingGeo, lightMaterial);
+        lightRing.rotation.x = Math.PI / 2;
+        lightRing.position.y = 0.05;
+        ship.add(lightRing);
+        
+        ship.scale.set(0.7, 0.7, 0.7);
+        scene.add(ship);
+
+
+        // --- INTERACTIVITY ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let lastDetectedRegion = '';
+        let interactionLock = false;
+        const mouseDownPos = new THREE.Vector2();
+
+        const regions = {
+            'USA': { lat: [24, 49], lon: [-125, -66] },
+            'China': { lat: [20, 50], lon: [75, 135] },
+            'India': { lat: [8, 37], lon: [68, 97] },
+            'Russia': { lat: [41, 82], lon: [19, 170] },
+            'Australia': { lat: [-44, -10], lon: [112, 154] },
+            'Africa': { lat: [-35, 37], lon: [-18, 52] },
+            'Antarctica': { lat: [-90, -65], lon: [-180, 180] }
+        };
+        
+        const ui = {
+            warningText: document.getElementById('warning-text'),
+            popupDialog: document.getElementById('popup-dialog'),
+            popupQuestion: document.getElementById('popup-question'),
+            broadcastMessage: document.getElementById('broadcast-message'),
+            yesBtn: document.getElementById('yes-btn'),
+            noBtn: document.getElementById('no-btn'),
+        };
+
+        function getRegionFromCoords(uv) {
+            const lon = uv.x * 360 - 180;
+            const lat = uv.y * 180 - 90;
+
+            for (const regionName in regions) {
+                const r = regions[regionName];
+                if (lat >= r.lat[0] && lat <= r.lat[1] && lon >= r.lon[0] && lon <= r.lon[1]) {
+                    return regionName;
+                }
+            }
+            return 'Oceanic Region';
+        }
+
+        window.addEventListener('pointerdown', onPointerDown);
+        window.addEventListener('pointerup', onPointerUp);
+        ui.yesBtn.addEventListener('click', onYesClick);
+        ui.noBtn.addEventListener('click', onNoClick);
+
+        function onPointerDown(event) {
+            mouseDownPos.x = event.clientX;
+            mouseDownPos.y = event.clientY;
+        }
+
+        function onPointerUp(event) {
+            const deltaX = Math.abs(event.clientX - mouseDownPos.x);
+            const deltaY = Math.abs(event.clientY - mouseDownPos.y);
+
+            if (deltaX > 5 || deltaY > 5) {
+                return;
+            }
+
+            if (interactionLock) return;
+
+            const isUiActive = !ui.popupDialog.classList.contains('hidden') || 
+                               !ui.warningText.classList.contains('hidden') || 
+                               !ui.broadcastMessage.classList.contains('hidden');
+            if (isUiActive) return;
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+
+            const intersects = raycaster.intersectObject(earth);
+
+            if (intersects.length > 0) {
+                const uv = intersects[0].uv;
+                if (uv) {
+                    lastDetectedRegion = getRegionFromCoords(uv);
+                    if (lastDetectedRegion !== 'Oceanic Region') {
+                        showWarning(lastDetectedRegion);
+                    }
+                }
+            }
+        }
+
+        function resetUI() {
+            ui.warningText.classList.add('hidden');
+            ui.popupDialog.classList.add('hidden');
+            ui.broadcastMessage.classList.add('hidden');
+        }
+
+        function showWarning(region) {
+            interactionLock = true;
+            resetUI();
+            ui.warningText.textContent = `Alien detected near ${region}!`;
+            ui.warningText.classList.remove('hidden');
+
+            setTimeout(() => {
+                ui.warningText.classList.add('hidden');
+                ui.popupQuestion.textContent = `Broadcast this alert to ${region}?`;
+                ui.popupDialog.classList.remove('hidden');
+            }, 3000);
+        }
+
+        function onYesClick() {
+            ui.popupDialog.classList.add('hidden');
+            ui.broadcastMessage.textContent = `Warning! Alien sighting reported in ${lastDetectedRegion}!`;
+            ui.broadcastMessage.classList.remove('hidden');
+
+            setTimeout(() => {
+                ui.broadcastMessage.classList.add('hidden');
+                interactionLock = false;
+            }, 4000);
+        }
+
+        function onNoClick() {
+            ui.popupDialog.classList.add('hidden');
+            setTimeout(() => {
+                interactionLock = false;
+            }, 1000);
+        }
+        
+        // --- ANIMATION LOOP ---
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            controls.update();
+
+            earth.rotation.y += 0.0005;
+            clouds.rotation.y += 0.0006;
+            stars.rotation.y += 0.0001;
+
+            // Animate spaceship flight path
+            ship.position.x = -80 + (elapsedTime * 10) % 200;
+            ship.position.y = 20 + Math.sin(elapsedTime * 0.7) * 4;
+            ship.position.z = 25;
+            
+            // Animate lights
+            lightMaterial.emissiveIntensity = Math.sin(elapsedTime * 5) * 0.5 + 0.5;
+
+
+            renderer.render(scene, camera);
+        }
+        
+        // --- RESIZE HANDLER ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>
