@@ -1,62 +1,86 @@
-🚨🌍 Alien Alert - Global Threat Detection
-The most advanced and entirely useless alien alert system on the web.
+Alien Alert - Global Threat Detection 🎯
+Basic Details
+Team Name: The Useless Engineers
+Team Members
+
+Team Lead: Deepak N S - Cochin University College Of Engineering, Kuttanad
+
+Member 2: Prashyanth P N - Cochin University College Of Engineering, Kuttanad
+
+Project Description
 Finally, a global alien alert system that does absolutely nothing. Click the Earth, feel important for a second, and then go about your day. You've earned it.
 
-✨ Features
-Interactive 3D Globe: A fully rendered, rotatable Earth with high-resolution day/night textures, clouds, and a beautiful atmospheric glow.
+The Problem (that doesn't exist)
+The world lives in constant, crippling anxiety from not knowing if a UFO is hovering over a specific continent right now. How can anyone focus on their work or enjoy a meal with this cosmic uncertainty looming over them?
 
-Alien UFO: A sleek, polished UFO with a glass cockpit and pulsing lights that gracefully glides through the scene.
+The Solution (that nobody asked for)
+We have developed a state-of-the-art, browser-based 3D globe that allows any user to take global security into their own hands. By simply clicking on a continent, you can initiate a highly sophisticated anomaly detection sequence, which may or may not confirm the presence of a non-terrestrial visitor who is politely asking for permission before probing anything.
 
-Region-Specific Alerts: Click on a continent to trigger a futuristic alert sequence, correctly identifying the region.
+Technical Details
+Technologies/Components Used
+For Software:
 
-Interactive UI: Sci-fi themed holographic popups and warning messages.
+Languages: HTML5, CSS3, JavaScript
 
-Cinematic Scenery: A deep space background complete with a vast, twinkling starfield.
+Frameworks: None, this is pure, unadulterated code.
 
-🚀 How To Run
-There are two ways to run this project:
+Libraries: Three.js
 
-1. The Simple Way (Single File)
+Tools: Visual Studio Code, Live Server
 
-Download the alien-alert.html file that contains all the HTML, CSS, and JavaScript.
+For Hardware:
 
-Open the file directly in any modern web browser (like Chrome, Firefox, or Edge).
+A computer with a mouse. A keyboard is optional but recommended for looking busy.
 
-That's it! The project will run.
+An internet connection to download the Earth.
 
-2. The Developer Way (Separate Files with a Live Server)
+Implementation
+For Software:
 
-This is the standard method for web development and is required if you use the separate index.html, style.css, and script.js files.
+Installation
+No installation is required. The project can be run from a single HTML file or via a local server.
 
-Install a Code Editor: If you don't have one, download and install Visual Studio Code.
+Run
+Method 1: Single File
 
-Get the "Live Server" Extension:
+Download the all-in-one .html file.
 
-In VS Code, go to the Extensions view (Ctrl+Shift+X).
+Open it in any modern web browser.
 
-Search for Live Server by Ritwick Dey and click Install.
+Method 2: Local Server (Recommended for development)
 
-Set Up Files:
+Install Visual Studio Code and the Live Server extension.
 
-Create a folder for the project.
 
-Place index.html, style.css, and script.js inside it.
+Right-click index.html in VS Code and select "Open with Live Server".
 
-Run the Server:
+Project Documentation
+For Software:
 
-Open the project folder in VS Code.
+Screenshots
+https://ibb.co/nNpQ55R3 , https://ibb.co/fG4ZrRKR , https://ibb.co/nNKVD5dp
+The main user interface, displaying the interactive globe and the high-priority alert header.
 
-Right-click on index.html and select "Open with Live Server".
+An active anomaly detection sequence, prompting the user for a critical, world-altering decision.
 
-A browser tab will open automatically with the project running.
+A successful broadcast of a completely verified alien sighting over a major global region.
 
-🛠️ Technologies Used
-HTML5
+Diagrams
+Our highly complex and scientifically rigorous workflow.
 
-CSS3
+For Hardware:
+N/A
 
-JavaScript
+Project Demo
+Video
+https://youtu.be/4s5eP0OW35M?si=YGRtlb6sr2G6FbMz
+This video demonstrates the full, unbridled power of the alien alert system in real-time.
 
-Three.js: A powerful 3D graphics library for creating and displaying animated 3D computer graphics in a web browser.
+Team Contributions
+Deepak NS: Engineered the 3D globe and perfected its spinny-ness.
 
-Feel free to clone, fork, or just have a laugh at this project.
+Prashyanth P N: Designed the UFO with extra-shiny metal and blinky lights.
+
+Deepak N S and Prashyanth P N: Handled the critical pop-up technology and button-clicking science.
+
+Made with ❤️ at TinkerHub Useless Projects
